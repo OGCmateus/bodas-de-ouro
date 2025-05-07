@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Respostas - Bodas de Ouro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Título -->
+    <div class="header">
+      <h1>Respostas do Convite</h1>
+    </div>
+
+    <!-- Exibição das respostas -->
+    <div id="responses" class="responses-list">
+      <h2>Respostas dos Convidados</h2>
+      <div id="responses-container">
+        <!-- As respostas serão exibidas aqui -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js";
+    
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAf81rrHMR8U84eG8qU-Fygr8Pg2JiHAqk",
+      authDomain: "bodas-de-ouro-5039d.firebaseapp.com",
+      projectId: "bodas-de-ouro-5039d",
+      storageBucket: "bodas-de-ouro-5039d.firebasestorage.app",
+      messagingSenderId: "794720480831",
+      appId: "1:794720480831:web:4cff33ceb10d60614f528a"
+    };
+
+    // Inicializa o Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Função para buscar e exibir as respostas
+    async function displayResponses() {
+      const querySnapshot = await getDocs(collection(db, "confirmations"));
+      const responsesContainer = document.getElementById("responses-container");
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const responseDiv = document.createElement("div");
+        responseDiv.classList.add("response");
+        responseDiv.innerHTML = `
+          <p><strong>Nome:</strong> ${data.name}</p>
+          <p><strong>Presença:</strong> ${data.presence}</p>
+          <button class="delete-btn" data-id="${doc.id}">Excluir</button>
+        `;
+        responsesContainer.appendChild(responseDiv);
+      });
+
+      // Adiciona o evento de exclusão após carregar as respostas
+      const deleteButtons = document.querySelectorAll('.delete-btn');
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const id = this.getAttribute('data-id');
+          const confirmDelete = confirm("Você tem certeza que deseja excluir esta resposta?");
+          if (confirmDelete) {
+            deleteResponse(id);
+          }
+        });
+      });
+    }
+
+    // Função para excluir uma resposta
+    async function deleteResponse(id) {
+      try {
+        await deleteDoc(doc(db, "confirmations", id));
+        alert('Resposta excluída com sucesso!');
+        location.reload(); // Atualiza a página para refletir a exclusão
+      } catch (error) {
+        console.error("Erro ao excluir a resposta: ", error);
+        alert("Erro ao excluir a resposta.");
+      }
+    }
+
+    // Carrega as respostas quando a página for carregada
+    window.onload = displayResponses;
+  </script>
+</body>
+</html>

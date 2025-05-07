@@ -1,0 +1,113 @@
+/* Estilo global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    color: #4b4b4b;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border: 3px solid #d4af37;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Cabeçalho */
+.header {
+    text-align: center;
+    color: #d4af37; /* Dourado para o texto */
+    padding: 20px 0;
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Respostas */
+#responses {
+    margin-top: 30px;
+}
+
+#responses-container {
+    margin-top: 20px;
+}
+
+.response {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.response p {
+    font-size: 1.2rem;
+    color: #4b4b4b;
+}
+
+.response p strong {
+    color: #d4af37; /* Dourado */
+}
+
+button {
+    background-color: #c39b31;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #b38d28;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+    }
+
+    .response p {
+        font-size: 1rem;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .response p {
+        font-size: 1rem;
+    }
+
+    button {
+        padding: 12px;
+    }
+}

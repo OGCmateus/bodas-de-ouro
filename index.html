@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convite das Bodas de Ouro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Cabeçalho do convite -->
+    <header class="header">
+      <h1>Convite das Bodas de Ouro</h1>
+    </header>
+
+    <div class="img-info">
+        <section class="info">
+            <h2>Eliezer & Nilda</h2>
+            <p><strong>50 Anos de Casados</strong></p>
+            <p><strong>Data:</strong> 08 | 06 | 2025</p>
+            <p><strong>Hora:</strong> Às 17 horas</p>
+            <p><strong>Local:</strong> R. José Cardoso, 261 - Jardim Tatuí, Tatuí - SP (Próximo ao clube de campo) </p>
+            <p>O presente é a sua presença, portanto não é necessário trazer nada!</p>
+        </section>
+        <img src="a933763d-f3e7-4b1d-a348-03b9f0a06eb9.jpg" alt="">
+    </div>
+    <!-- Informações do evento -->
+
+    <!-- Confirmação de presença -->
+    <div class="invite">
+      <h2>Confirmação de Presença</h2>
+      <form id="form">
+        <label for="name">Seu nome:</label>
+        <input type="text" id="name" required placeholder="Digite seu nome...">
+        
+        <label for="presence">Você irá comparecer às bodas de ouro?</label>
+        <div class="options">
+          <button type="button" id="yes">Sim</button>
+          <button type="button" id="no">Não</button>
+        </div>
+        
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+
+    <div id="thank-you" class="thank-you-message">
+      <h2>Obrigado pela sua confirmação!</h2>
+      <p>Estamos muito felizes com a sua presença. Até lá!</p>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+  
+  <script type="module">
+    // Importa as funções necessárias do SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js";
+  
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAf81rrHMR8U84eG8qU-Fygr8Pg2JiHAqk",
+      authDomain: "bodas-de-ouro-5039d.firebaseapp.com",
+      projectId: "bodas-de-ouro-5039d",
+      storageBucket: "bodas-de-ouro-5039d.firebasestorage.app",
+      messagingSenderId: "794720480831",
+      appId: "1:794720480831:web:4cff33ceb10d60614f528a"
+    };
+
+    // Inicializa o Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Enviar dados para o Firestore ao enviar o formulário
+    document.getElementById("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const presence = document.querySelector("button.active")?.id; // Verifica qual botão foi clicado
+
+      if (name && presence) {
+        try {
+          // Envia os dados para o Firestore
+          await addDoc(collection(db, "confirmations"), {
+            name: name,
+            presence: presence === "yes" ? "Sim" : "Não",
+          });
+          alert("Resposta enviada com sucesso!");
+        } catch (e) {
+          alert("Erro ao enviar resposta: " + e.message);
+        }
+      } else {
+        alert("Por favor, preencha todos os campos.");
+      }
+    });
+
+    // Marca o botão ativo (Sim ou Não)
+    document.querySelectorAll("button[type='button']").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("button").forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
